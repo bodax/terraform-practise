@@ -12,8 +12,13 @@ data "aws_subnet" "public" {
   }
 
   filter {
-    name   = "cidr-block"
-    values = ["10.0.1.0/24"]
+    name   = "availability-zone"
+    values = ["eu-west-1a"]
+  }
+
+  filter {
+    name   = "map-public-ip-on-launch"
+    values = ["true"]
   }
 }
 
@@ -56,6 +61,7 @@ resource "aws_instance" "cmtr-031bfa7b-ec2" {
   associate_public_ip_address = true
 
   tags = {
+    Name    = "cmtr-031bfa7b-ec2"
     Project = "epam-tf-lab"
     ID      = "cmtr-031bfa7b"
   }
