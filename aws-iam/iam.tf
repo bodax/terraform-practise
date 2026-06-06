@@ -6,21 +6,21 @@ provider "aws" {
 # IAM Group
 # ----------------------------
 resource "aws_iam_group" "iam_group" {
-  name = "cmtr-031bfa7b-iam-group"
+  name = "${var.prefix}-iam-group"
 }
 
 # ----------------------------
 # IAM Policy (S3 WRITE ONLY to existing bucket)
 # ----------------------------
 resource "aws_iam_policy" "iam_policy" {
-  name = "cmtr-031bfa7b-iam-policy"
+  name = "${var.prefix}-iam-policy"
 
   policy = templatefile("${path.module}/policy.json", {
-    bucket_name = "cmtr-031bfa7b-bucket-1780746868"
+    bucket_name = var.bucket_name
   })
 
   tags = {
-    Project = "cmtr-031bfa7b"
+    Project = var.project_tag
   }
 }
 
@@ -34,7 +34,7 @@ resource "aws_iam_group_policy_attachment" "group_policy_attachment" {
 # IAM Role (EC2 assume role)
 # ----------------------------
 resource "aws_iam_role" "iam_role" {
-  name = "cmtr-031bfa7b-iam-role"
+  name = "${var.prefix}-iam-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -50,7 +50,7 @@ resource "aws_iam_role" "iam_role" {
   })
 
   tags = {
-    Project = "cmtr-031bfa7b"
+    Project = var.project_tag
   }
 }
 
@@ -64,10 +64,10 @@ resource "aws_iam_role_policy_attachment" "role_policy_attachment" {
 # IAM Instance Profile
 # ----------------------------
 resource "aws_iam_instance_profile" "instance_profile" {
-  name = "cmtr-031bfa7b-iam-instance-profile"
+  name = "${var.prefix}-iam-instance-profile"
   role = aws_iam_role.iam_role.name
 
   tags = {
-    Project = "cmtr-031bfa7b"
+    Project = var.project_tag
   }
 }
