@@ -3,9 +3,9 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "storage_bucket" {
-  bucket = "cmtr-031bfa7b-bucket-1780745438"
+  bucket = var.bucket_name
 
   tags = {
-    Project = "cmtr-031bfa7b"
+    Project = var.project_tag
   }
 }
