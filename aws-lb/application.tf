@@ -92,7 +92,7 @@ locals {
 
 resource "aws_launch_template" "cmtr-031bfa7b-template" {
   name          = "cmtr-031bfa7b-template"
-  instance_type = "t3.micro"
+  instance_type = var.instance_type
   image_id      = data.aws_ami.amazon_linux.id
   key_name      = data.aws_key_pair.keypair.key_name
 
@@ -122,13 +122,13 @@ resource "aws_launch_template" "cmtr-031bfa7b-template" {
     tags = {
       Name      = "cmtr-031bfa7b-instance"
       Terraform = "true"
-      Project   = "cmtr-031bfa7b"
+      Project   = var.project_id
     }
   }
 
   tags = {
     Terraform = "true"
-    Project   = "cmtr-031bfa7b"
+    Project   = var.project_id
   }
 }
 
@@ -141,7 +141,7 @@ resource "aws_lb" "cmtr-031bfa7b-loadbalancer" {
 
   tags = {
     Terraform = "true"
-    Project   = "cmtr-031bfa7b"
+    Project   = var.project_id
   }
 }
 
@@ -163,7 +163,7 @@ resource "aws_lb_target_group" "cmtr-031bfa7b-tg" {
 
   tags = {
     Terraform = "true"
-    Project   = "cmtr-031bfa7b"
+    Project   = var.project_id
   }
 }
 
@@ -179,7 +179,7 @@ resource "aws_lb_listener" "cmtr-031bfa7b-listener" {
 
   tags = {
     Terraform = "true"
-    Project   = "cmtr-031bfa7b"
+    Project   = var.project_id
   }
 }
 
@@ -207,7 +207,7 @@ resource "aws_autoscaling_group" "cmtr-031bfa7b-asg" {
 
   tag {
     key                 = "Project"
-    value               = "cmtr-031bfa7b"
+    value               = var.project_id
     propagate_at_launch = true
   }
 
